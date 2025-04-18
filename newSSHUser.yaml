@@ -1,0 +1,20 @@
+---
+- name: Create deploy user with SSH access
+  hosts: all
+  become: true
+
+  vars:
+    username: deploy
+    ssh_key: "ssh-rsa AAAAB3Nz..."
+
+  tasks:
+    - name: Create a new user
+      user:
+        name: "{{ username }}"
+        shell: /bin/bash
+        state: present
+
+    - name: Add SSH key for user
+      authorized_key:
+        user: "{{ username }}"
+        key: "{{ ssh_key }}"
